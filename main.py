@@ -27,8 +27,6 @@ def output(path, data):
 if __name__ == "__main__":
     args = config()
 
-    # data = [["2018-01-01 00:00:00", "buy", 2.5, 3],
-    #         ["2018-01-01 01:00:00", "sell", 3, 5]]
     df_gen = pd.read_csv(args.generation)
     df_con = pd.read_csv(args.consumption)
     gen = []
@@ -55,10 +53,15 @@ if __name__ == "__main__":
     pred_gen = []
     pred_con = []
     for j in range(len(gen)):
-        pred_gen.append(model_gen.predict(gen[j]))
-        pred_con.append(model_con.predict(con[j])) 
-    diff = pred_gen - pred_con
-    
+        print(gen[j])
+        pred_gen.append(model_gen.predict([gen[j]]))
+        pred_con.append(model_con.predict([con[j]])) 
+    print("pred")
+    print(pred_gen)
+    diff = []
+    for j in range(len(gen)):
+        diff.append(pred_gen[j][0] - pred_con[j][0])
+    print(diff)
     last_time = list(df_gen['time'][-1:].str.split('-'))
     last_day = int(last_time[0][2].split(' ')[0])
     last_hour = int(last_time[0][2].split(' ')[1].split(':')[0])
@@ -67,10 +70,10 @@ if __name__ == "__main__":
     for k in range(len(diff)):
         if diff[k] > 0:
             time_now = timestamp + datetime.timedelta(hours=1)
-            data.append([time_now, 'sell', 1.5, diff])
+            data.append([time_now, 'sell', 1.5, diff[k]])
         else:
             time_now = timestamp + datetime.timedelta(hours=1)
-            data.append([time_now, 'buy', 1.5, abs(diff)])
+            data.append([time_now, 'buy', 1.5, abs(diff[k])])
             
         
     
