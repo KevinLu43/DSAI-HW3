@@ -69,11 +69,11 @@ if __name__ == "__main__":
     data = []
     for k in range(len(diff)):
         if diff[k] > 0:
-            time_now = timestamp + datetime.timedelta(hours=1)
-            data.append([time_now, 'sell', 1.5, diff[k]])
+            timestamp = timestamp + datetime.timedelta(hours=1)
+            data.append([timestamp, 'sell', 1.5, diff[k]])
         else:
-            time_now = timestamp + datetime.timedelta(hours=1)
-            data.append([time_now, 'buy', 1.5, abs(diff[k])])
+            timestamp = timestamp + datetime.timedelta(hours=1)
+            data.append([timestamp, 'buy', 1.5, abs(diff[k])])
             
         
     
